@@ -2,8 +2,9 @@ package client
 
 import (
 	"encoding/json"
-	"github.com/golang/glog"
 	"time"
+
+	"github.com/golang/glog"
 )
 
 type P map[string]interface{}
@@ -13,7 +14,7 @@ type TransData struct {
 	Params P
 }
 
-var channel = make(chan *TransData, 1024)
+var channel = make(chan *TransData, 10240)
 var closeOk = make(chan struct{})
 
 const MAX_PAYLOAD = 64 * 1024
@@ -62,8 +63,10 @@ func Start(addr string) {
 }
 
 func Log(tab string, p P) {
-	t := &TransData{tab, p}
-	channel <- t
+	if srv != nil {
+		t := &TransData{tab, p}
+		channel <- t
+	}
 }
 
 func Close() {

@@ -2,11 +2,12 @@ package main
 
 import (
 	"flag"
-	logc "github.com/cuixin/gologd/client"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	logc "github.com/cuixin/gologd/client"
 )
 
 func main() {

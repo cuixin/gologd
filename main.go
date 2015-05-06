@@ -5,11 +5,12 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type MySQLConf struct {

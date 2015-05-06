@@ -3,8 +3,9 @@ package client
 import (
 	"bytes"
 	"encoding/binary"
-	"github.com/golang/glog"
 	"net"
+
+	"github.com/golang/glog"
 )
 
 const (
