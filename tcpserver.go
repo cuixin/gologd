@@ -26,6 +26,7 @@ func (this *TcpServer) buildListener() error {
 		log.Fatalf("resolve local addr failed:%s\n", err.Error())
 		return err
 	}
+	log.Printf("try to listen %s\n", this.addr)
 
 	ln, err := net.ListenTCP("tcp", laddr)
 	if err != nil {

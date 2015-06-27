@@ -40,20 +40,18 @@ func loadJsonFile(path string) error {
 }
 
 var (
-	mysqlPath string
-	lPort     string
+	mysqlPath = flag.String("c", "conf.json", "指定读取Mysql配置的文件")
+	lPort     = flag.String("p", ":1234", "指定http的端口")
 )
 
 func init() {
-	mysqlPath = *flag.String("c", "conf.json", "指定读取Mysql配置的文件")
-	lPort = *flag.String("p", ":1234", "指定http的端口")
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 }
 
 func main() {
 	flag.Parse()
 	var err error
-	if err = loadJsonFile(mysqlPath); err != nil {
+	if err = loadJsonFile(*mysqlPath); err != nil {
 		panic(err)
 	}
 
@@ -65,8 +63,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("Open database error: %s\n", err)
 	}
-	db.SetMaxOpenConns(100)
-	db.SetMaxIdleConns(100)
+	db.SetMaxOpenConns(16)
+	db.SetMaxIdleConns(16)
 
 	err = db.Ping()
 	if err != nil {
@@ -74,7 +72,7 @@ func main() {
 	}
 	log.Println("Connect Database OK!")
 	defer db.Close()
-	srv := NewServer(lPort)
+	srv := NewServer(*lPort)
 	srv.Start()
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
